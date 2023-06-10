@@ -57,4 +57,12 @@ app.post("/create-cart", (req, res) => {
 			res.send(response.data);
 		});
 })
+
+app.post("/get-ip", async (req, res) => {
+	console.log(req.body.ip);
+	await axios.get(`https://api.ip2location.io/?key=56A36D62B0A865152FCA3E403509F575&ip=${req.body.ip.ip}`).then((data) => {
+		// console.log(data.data.ip);
+		res.send(data.data);
+	})
+})
 app.listen(5000, () => console.log("Servier is listening to port 5000"));
