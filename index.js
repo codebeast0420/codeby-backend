@@ -21,7 +21,7 @@ app.post("/add-to-cart", (req, res) => {
 		{
 			headers: {
 				'Content-Type': 'application/json',
-				'X-Shopify-Access-Token': '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'
+				'X-Shopify-Access-Token': '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'
 			},
 		}
 	)
