@@ -3,6 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const axios = require("axios").create({ baseUrl: "" });
 const { v4: uuidv4 } = require('uuid');
+const nodemailer = require('nodemailer');
 
 const app = express();
 app.use(bodyParser.json());
@@ -10,6 +11,57 @@ app.use(bodyParser.json());
 app.use(cors({
 	origin: '*'
 }));
+
+// var transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: 'codebeast0420',
+//     pass: 'codebeast0420!@#'
+//   }
+// });
+
+// var mailOptions = {
+//   from: 'codebeast0420@gmail.com',
+//   to: 'johnleedevlead@gmail.com',
+//   subject: 'Sending Email using Node.js',
+//   text: 'That was easy!'
+// };
+
+app.post("/mail", async (req, res) => {
+	let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      type: 'OAuth2',
+      user: 'codebeast0420@gmail.com',
+      pass: 'codebeast0420!@#',
+      clientId: '285817227208-submk3onndptffg48ginmqvlsev80on8.apps.googleusercontent.com',
+      clientSecret: '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',
+      refreshToken: '1//04RSvXBLYHsOhCgYIARAAGAQSNwF-L9IrY-PFg_tl8kykAoZD8hJrnBLFSyyQHxrLNTV5eQvgxdWWphbqILeMOIrSXnRgLiiq_9g'
+    }
+  });
+  let mailOptions = {
+    from: req.body.from,
+    to: 'codebeast0420@gmail.com, hello@codebyedge.com, david.evans@codebyedge.com',
+    subject: 'Contact from codeby edge',
+    text: req.body.text
+  };
+
+  await transporter.sendMail(mailOptions, function (err, data) {
+    if (err) {
+      console.log("Error " + err);
+    } else {
+      console.log("Email sent successfully");
+    }
+  });
+	transporter.sendMail(mailOptions, function(error, info){
+		if (error) {
+			console.log(error);
+		} else {
+			console.log('Email sent: ' + info.response);
+		}
+	});
+	res.send('success');
+})
 
 app.get("/", (req, res) => {
 	res.send("Hello, Worlds")
