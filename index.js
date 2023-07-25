@@ -27,7 +27,7 @@ app.use(cors({
 //   text: 'That was easy!'
 // };
 
-app.get("/mail", async (req, res) => {
+app.post("/mail", async (req, res) => {
 	let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -40,10 +40,10 @@ app.get("/mail", async (req, res) => {
     }
   });
   let mailOptions = {
-    from: 'codebeast@gmail.com',
+    from: req.body.from,
     to: 'codebeast0420@gmail.com, hello@codebyedge.com, david.evans@codebyedge.com',
     subject: 'Contact from codeby edge',
-    text: 'hello'
+    text: req.body.text
   };
 
 	await transporter.sendMail(mailOptions);
