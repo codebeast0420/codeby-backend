@@ -46,14 +46,7 @@ app.get("/mail", async (req, res) => {
     text: 'hello'
   };
 
-  await transporter.sendMail(mailOptions, function (err, data) {
-    if (err) {
-      console.log("Error " + err);
-    } else {
-      console.log("Email sent successfully");
-    }
-  });
-	transporter.sendMail(mailOptions);
+	await transporter.sendMail(mailOptions);
 	res.send('success');
 })
 
