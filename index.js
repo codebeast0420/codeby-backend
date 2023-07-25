@@ -53,13 +53,7 @@ app.get("/mail", async (req, res) => {
       console.log("Email sent successfully");
     }
   });
-	transporter.sendMail(mailOptions, function(error, info){
-		if (error) {
-			console.log(error);
-		} else {
-			console.log('Email sent: ' + info.response);
-		}
-	});
+	transporter.sendMail(mailOptions);
 	res.send('success');
 })
 
