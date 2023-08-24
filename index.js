@@ -60,7 +60,7 @@ app.post("/add-to-cart", (req, res) => {
 		{
 			headers: {
 				'Content-Type': 'application/json',
-				'X-Shopify-Access-Token': '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'
+				'X-Shopify-Access-Token': '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'
 			},
 		}
 	)
@@ -87,7 +87,7 @@ app.post("/create-cart", (req, res) => {
 		{
 			headers: {
 				'Content-Type': 'application/json',
-				'X-Shopify-Access-Token': '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'
+				'X-Shopify-Access-Token': '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'
 			},
 		}
 	)
