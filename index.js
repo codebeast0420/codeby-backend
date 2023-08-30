@@ -12,31 +12,12 @@ app.use(cors({
 	origin: '*'
 }));
 
-// var transporter = nodemailer.createTransport({
-//   service: 'gmail',
-//   auth: {
-//     user: 'codebeast0420',
-//     pass: 'codebeast0420!@#'
-//   }
-// });
-
-// var mailOptions = {
-//   from: 'codebeast0420@gmail.com',
-//   to: 'johnleedevlead@gmail.com',
-//   subject: 'Sending Email using Node.js',
-//   text: 'That was easy!'
-// };
-
 app.post("/mail", async (req, res) => {
 	let transporter = nodemailer.createTransport({
     service: 'gmail',
-    auth: {
-      type: 'OAuth2',
-      user: 'codebeast0420@gmail.com',
-      pass: 'codebeast0420!@#',
-      clientId: '285817227208-submk3onndptffg48ginmqvlsev80on8.apps.googleusercontent.com',
-      clientSecret: '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',
-      refreshToken: '1//04RSvXBLYHsOhCgYIARAAGAQSNwF-L9IrY-PFg_tl8kykAoZD8hJrnBLFSyyQHxrLNTV5eQvgxdWWphbqILeMOIrSXnRgLiiq_9g'
+		auth: {
+      user: 'saintjohn0420@gmail.com',
+      pass: 'npklrlxiwppyfpus',
     }
   });
   let mailOptions = {
