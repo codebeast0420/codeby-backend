@@ -13,6 +13,8 @@ app.use(cors({
 	origin: '*'
 }));
 
+const url = 'https://api.urlbox.io/v1/render/sync';
+
 app.post("/mail", async (req, res) => {
 	let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -31,6 +33,22 @@ app.post("/mail", async (req, res) => {
 	await transporter.sendMail(mailOptions);
 	res.send('success');
 })
+
+app.post("/screenshot", async (req, res) => {
+	const options = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.URLBOX_KEY}` },
+		body: JSON.stringify({ format: 'png', full_page: true, url: req.body.url })
+	};
+	try {
+		const response = await fetch(url, options);
+		const data = await response.json();
+		console.log(data);
+		res.json(data);
+	} catch (error) {
+		console.error(error);
+	}
+});
 
 app.get("/", (req, res) => {
 	res.send("Hello, Worlds")
