@@ -67,17 +67,13 @@ async function InputProposalSheets(recordID, proposal) {
 
 		// Get all rows from the sheet
 		const rows = await sheet.getRows(); // This fetches all rows
-		rows.forEach((row, index) => {
+		rows.forEach(async (row, index) => {
 			if (row.get('Record ID') === recordID) {
 				row.set('Proposal', proposal);
-				row.save();
+				await row.save();
 			}
 		});
 
-		// console.log("count", sheet.rowCount);
-		// console.log("row3", rows[3].get('Record ID'), rows[3].get('Proposal'));
-		// rows[3].set('Proposal', "Hello");
-		// await rows[3].save();
 		return true;
 	} catch (error) {
 		console.error('Failed to access Google Sheets API:', error);
