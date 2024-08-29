@@ -24,7 +24,7 @@ async function GetGoogleSheetRows() {
 		await doc.loadInfo();
 
 		// Access the first sheet
-		const sheet = doc.sheetsByIndex[1];
+		const sheet = doc.sheetsByIndex[0];
 
 		// Get all rows from the sheet
 		const rows = await sheet.getRows(); // This fetches all rows
@@ -44,6 +44,44 @@ async function GetGoogleSheetRows() {
 	} catch (error) {
 		console.error('Failed to access Google Sheets API:', error);
 		return null;
+	}
+}
+
+async function InputProposalSheets(recordID, proposal) {
+	try {
+		// Create a new JWT client using your service account credentials
+		const serviceAccountAuth = new JWT({
+			email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+			key: process.env.GOOGLE_PRIVATE_KEY.split(String.raw`\n`).join('\n'),
+			scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+		});
+
+		// Create a new GoogleSpreadsheet instance and authenticate
+		const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID, serviceAccountAuth);
+
+		// Load the document information
+		await doc.loadInfo();
+
+		// Access the first sheet
+		const sheet = doc.sheetsByIndex[0];
+
+		// Get all rows from the sheet
+		const rows = await sheet.getRows(); // This fetches all rows
+		rows.forEach((row, index) => {
+			if (row.get('Record ID') === recordID) {
+				row.set('Proposal', proposal);
+				row.save();
+			}
+		});
+
+		// console.log("count", sheet.rowCount);
+		// console.log("row3", rows[3].get('Record ID'), rows[3].get('Proposal'));
+		// rows[3].set('Proposal', "Hello");
+		// await rows[3].save();
+		return true;
+	} catch (error) {
+		console.error('Failed to access Google Sheets API:', error);
+		return false;
 	}
 }
 
@@ -93,8 +131,14 @@ app.post("/screenshot", async (req, res) => {
 });
 
 app.get("/", (req, res) => {
-	res.send("Hello, Worlds")
+	res.send("Hello, Worlds");
 })
+
+app.post("/proposal", async (req, res) => {
+	console.log('req', req.body);
+	const result = await InputProposalSheets(req.body.recordID, req.body.proposal);
+	res.send({ ok: result });
+});
 
 app.get("/get-sheet", async (req, res) => {
 	console.log('here');
