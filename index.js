@@ -67,12 +67,13 @@ async function InputProposalSheets(recordID, proposal) {
 
 		// Get all rows from the sheet
 		const rows = await sheet.getRows(); // This fetches all rows
-		rows.forEach(async (row, index) => {
+
+		for (const row of rows) {
 			if (row.get('Record ID') === recordID) {
 				row.set('Proposal', proposal);
 				await row.save();
 			}
-		});
+		}
 
 		return true;
 	} catch (error) {
